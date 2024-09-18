@@ -663,8 +663,9 @@ void ts_tls_print_json(struct tls_cert *tls_cert, FILE *fp, bool pretty)
 
   const options_t *op = ts_get_global_option_obj();
 
-  fprintf(fp, "{%c", fmt);
+  //fprintf(fp, "{%c", fmt);
 
+/*
   if (tls_cert->host[0] != 0) {
     fprintf(fp, "%.*s\"host\": \"%s\",%c", FMT_INDENT(2), tls_cert->host, fmt);
   }
@@ -860,16 +861,17 @@ void ts_tls_print_json(struct tls_cert *tls_cert, FILE *fp, bool pretty)
   if (tls_cert->x509_chain_depth > 0) {
     fprintf(fp, "%.*s\"certificateChain\": [%c", FMT_INDENT(2), fmt);
   }
-
+*/
   int i = 0;
   size_t outbuffer_length = 4096;
   size_t oblen = 0;
   char outbuffer[outbuffer_length];
   while (i < tls_cert->x509_chain_depth) {
 
-    if (i == CERT_CHAIN_MAXLEN) {
+    if (i == 1) {
       break;
     }
+    /*
 
     fprintf(fp, "%.*s{%c", FMT_INDENT(2), fmt);
     fprintf(fp, "%.*s\"version\": %d,%c", FMT_INDENT(4),
@@ -892,14 +894,15 @@ void ts_tls_print_json(struct tls_cert *tls_cert, FILE *fp, bool pretty)
       fprintf(fp, "%.*s\"issuer\": \"%.*s\",%c", FMT_INDENT(4),
                                            (int)oblen, outbuffer, fmt);
     }
-
+  */
     if (tls_cert->x509[i].subject_cname) {
       BIO_get_mem_ptr(tls_cert->x509[i].subject_cname, &bptr);
       oblen = ts_json_escape(bptr->data, bptr->length, &outbuffer[0],
                                                            outbuffer_length);
-      fprintf(fp, "%.*s\"subjectCN\": \"%.*s\",%c", FMT_INDENT(4),
-                                           (int)oblen, outbuffer, fmt);
+      fprintf(fp, "%.*s\"%.*s\",%c", FMT_INDENT(4),
+            (int)oblen, outbuffer, fmt);
     }
+    /*
 
     if (0 == i) {
       if (tls_cert->san) {
@@ -973,12 +976,12 @@ void ts_tls_print_json(struct tls_cert *tls_cert, FILE *fp, bool pretty)
     } else {
       fprintf(fp, "%.*s},", FMT_INDENT(2));
     }
-
+*/
     i++;
   }
 
-  fprintf(fp, "}\n");
-  fflush(fp);
+  //fprintf(fp, "}\n");
+  //fflush(fp);
 
   // print seperate, outside of json
   if (op->session_print) {

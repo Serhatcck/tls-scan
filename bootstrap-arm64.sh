@@ -61,7 +61,7 @@ mv PeterMosmans-openssl-${OPENSSL_VERSION} openssl-arm64
 cd openssl-arm64
 
 cd ${BUILDDIR}/downloads
-curl -OL https://www.zlib.net/${ZLIB_VERSION}.tar.gz
+curl -OL https://zlib.net/fossils/${ZLIB_VERSION}.tar.gz
 
 cd ${BUILDDIR}/build
 tar -zxvf ${BUILDDIR}/downloads/${ZLIB_VERSION}.tar.gz
